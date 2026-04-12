@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SkyCinema — Загрузка...</title>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/carts.css">
+    <link rel="stylesheet" href="../css/modal.css">
+    <link rel="stylesheet" href="../css/large.css">
+    <link rel="stylesheet" href="../css/laptop.css">
+    <link rel="stylesheet" href="../css/mobile.css">
+    <link rel="shortcut icon" href="../media/favicon.ico">
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <header class="glass">
+        <div class="logo-city-group">
+            <div class="logo">SKY<span>CINEMA</span></div>
+            <div class="city-selector">
+                <img src="../media/map.png" alt="карта" height="25">
+                <select id="citySelectHeader" class="glass-select"></select>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Афиша</a></li>
+                <li><a href="films.html">Фильмы</a></li>
+                <li><a href="cinema.html">Кинотеатры</a></li>
+                <li><a href="stocks.html">Акции</a></li>
+            </ul>
+        </nav>
+        <div class="header-right">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Поиск по страницам..." class="glass-input">
+                <img src="../media/magnifier.png" alt="Поиск" class="search-icon">
+            </div>
+        </div>
+    </header>
+
+    <main id="movieMain">
+        <div class="container-fluid px-lg-5 px-md-4 px-3">
+            <div class="breadcrumbs">
+                <a href="../index.html">Главная</a> /
+                <a href="films.html">Фильмы</a> /
+                <span id="breadcrumbMovieTitle"></span>
+            </div>
+            <div class="movie-detail glass">
+                <div class="row">
+                    <div class="col-md-4 col-lg-3">
+                        <div class="movie-detail-poster">
+                            <img id="detailPoster" src="" alt="Постер">
+                            <div class="age-badge" id="detailAge"></div>
+                            <div class="movie-gallery">
+                                <div class="gallery-carousel">
+                                    <button class="gallery-prev">‹</button>
+                                    <div class="gallery-track"></div>
+                                    <button class="gallery-next">›</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-lg-9">
+                        <div class="movie-detail-info">
+                            <h1 id="detailTitle"></h1>
+                            <p id="detailGenre"></p>
+                            <div class="detail-meta">
+                                <span>Год выпуска: <span id="detailYear"></span></span>
+                                <span>Длительность: <span id="detailDuration"></span> мин</span>
+                                <span>Возраст: <span id="detailAgeText"></span></span>
+                            </div>
+                            <div class="detail-actors"><strong>Главные роли:</strong> <span id="detailActors"></span></div>
+                            <div class="detail-description"><strong>Описание:</strong> <p id="detailDesc"></p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2 class="section-title">Расписание</h2>
+            <div class="sessions-container glass w-100">
+                <div id="sessionsListMovie" class="sessions-list">
+                    <p class="placeholder">Выберите кинотеатр</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="glass">
+        <p>© 2026 SkyCinema. Все права защищены.</p>
+    </footer>
+
+    <!-- Модальные окна -->
+    <div class="modal fade" id="ticketModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content glass-modal">
+                <div class="modal-header">
+                    <h5 class="modal-title">Выбор места</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4 movie-info-left">
+                            <div id="movieInfoModal" class="movie-info-modal"></div>
+                        </div>
+                        <div class="col-md-8 hall-right">
+                            <div class="hall-scheme">
+                                <img src="../media/modal/screen.png" alt="Экран" class="screen-img">
+                                <div id="seatsContainer" class="seats-container"></div>
+                            </div>
+                            <div class="legend">
+                                <span><span class="seat-demo free"></span> Свободное место</span>
+                                <span><span class="seat-demo selected"></span> Выбранное место</span>
+                                <span><span class="seat-demo taken"></span> Место занято</span>
+                            </div>
+                            <div class="price-seat-info">
+                                <div id="selectedSeatInfo" class="selected-seat-info">Место не выбрано</div>
+                                <div id="ticketPrice" class="ticket-price"></div>
+                            </div>
+                            <div class="email-field">
+                                <label for="userEmail">Email для получения билета:</label>
+                                <input type="email" id="userEmail" class="glass-input" placeholder="example@mail.ru" required>
+                            </div>
+                            <div class="modal-footer-buttons">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                                <button type="button" id="confirmTicket" class="btn btn-primary" disabled>Купить билет</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content glass-modal">
+                <div class="modal-body text-center">
+                    <img id="modalImage" src="" alt="Увеличенное фото" style="max-width: 100%; border-radius: 16px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="trailerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content glass-modal">
+                <div class="modal-header">
+                    <h5 class="modal-title">Трейлер</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <video id="trailerVideo" controls style="width:100%; border-radius: 24px;"></video>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-modal">
+                <div class="modal-body">
+                    <img src="../media/modal/check.png" alt="Успех" class="success-icon">
+                    <div class="success-title">Покупка прошла успешно</div>
+                    <div class="success-details">Билет отправлен на указанную почту.<br>Скачать билет можно по ссылке:</div>
+                    <div class="success-buttons">
+                        <a href="https://vk.com/sayonaraf" target="_blank" class="btn btn-vk">Перейти к билету (VK)</a>
+                        <button class="btn btn-close-modal" data-bs-dismiss="modal">Закрыть</button>
+                    </div>
+                    <div class="success-rating">
+                        <p>Оцените процесс покупки</p>
+                        <div class="rating-stars" id="ratingStars">
+                            <span data-value="1">★</span><span data-value="2">★</span><span data-value="3">★</span><span data-value="4">★</span><span data-value="5">★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/ticket.js"></script>
+    <script src="../js/movieCards.js"></script>
+    <script src="../js/movieDetail.js"></script>
+    <script src="../js/header.js"></script>
+</body>
+</html>
