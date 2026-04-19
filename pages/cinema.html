@@ -9,9 +9,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/carts.css">
     <link rel="stylesheet" href="../css/modal.css">
-    <link rel="stylesheet" href="../css/large.css">
-    <link rel="stylesheet" href="../css/laptop.css">
-    <link rel="stylesheet" href="../css/mobile.css">
+    <link rel="stylesheet" href="../css/responsive.css">
     <link rel="shortcut icon" href="../media/favicon.ico">
     <script src="https://api-maps.yandex.ru/2.1/?apikey=a239d242-d6cf-4985-a459-db777a291348&lang=ru_RU"></script>
 </head>
@@ -23,13 +21,16 @@
 
     <header class="glass">
         <div class="logo-city-group">
-            <div class="logo">SKY<span>CINEMA</span></div>
+            <div class="logo">
+                <a href="../index.html" style="text-decoration: none; color: inherit;">SKY<span>CINEMA</span></a>
+            </div>
             <div class="city-selector">
                 <img src="../media/map.png" alt="карта" height="25">
-                <select id="citySelectHeader" class="glass-select"></select>
+                <select id="citySelectHeader" class="glass-select-header"></select>
             </div>
         </div>
-        <nav>
+
+        <nav class="desktop-nav">
             <ul>
                 <li><a href="../index.html">Афиша</a></li>
                 <li><a href="films.html">Фильмы</a></li>
@@ -37,13 +38,25 @@
                 <li><a href="stocks.html">Акции</a></li>
             </ul>
         </nav>
+
         <div class="header-right">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Поиск по страницам..." class="glass-input">
+            <div class="search-box d-none d-md-flex">
+                <input type="text" id="searchInput" placeholder="Поиск по странице..." class="glass-input">
                 <img src="../media/magnifier.png" alt="Поиск" class="search-icon">
+            </div>
+            <div class="burger-menu" id="burgerBtn">
+                <span></span><span></span><span></span>
             </div>
         </div>
     </header>
+    <div class="mobile-nav-container" id="mobileNav">
+        <ul class="mobile-ul">
+            <li><a href="../index.html">Афиша</a></li>
+            <li><a href="films.html">Фильмы</a></li>
+            <li><a href="cinema.html">Кинотеатры</a></li>
+            <li><a href="stocks.html">Акции</a></li>
+        </ul>
+    </div>
 
     <main class="cinemas-main">
         <div class="container-fluid px-lg-5 px-md-4 px-3">
