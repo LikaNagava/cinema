@@ -1,4 +1,3 @@
-/* month-year modal (окно выбора месяца/года) */
 .month-year-modal {
     position: absolute;
     z-index: 2000;
@@ -7,10 +6,12 @@
     transition: visibility 0.2s, opacity 0.2s;
     min-width: 260px;
 }
+
 .month-year-modal.active {
     visibility: visible;
     opacity: 1;
 }
+
 .month-year-panel {
     background: rgba(26, 26, 46, 0.95);
     backdrop-filter: blur(20px);
@@ -21,6 +22,7 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     border: 1px solid var(--glass-border);
 }
+
 .month-year-panel .years-row {
     display: flex;
     justify-content: space-between;
@@ -28,18 +30,21 @@
     margin-bottom: 15px;
     gap: 10px;
 }
+
 .month-year-panel .year-display {
     font-size: 18px;
     font-weight: 600;
     color: var(--text-light);
     flex: 1;
 }
+
 .months-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     margin: 15px 0;
 }
+
 .month-btn {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid var(--glass-border);
@@ -50,11 +55,13 @@
     transition: 0.2s;
     font-size: 14px;
 }
+
 .month-btn:hover {
     background: rgba(93, 201, 201, 0.3);
     border-color: var(--accent-soft-teal);
     transform: scale(1.02);
 }
+
 .month-year-panel .close-modal-btn {
     margin-top: 12px;
     width: 100%;
@@ -73,26 +80,32 @@
     max-height: 90vh;
     overflow-y: auto;
 }
+
 .glass-modal .modal-header {
     border-bottom: 1px solid var(--glass-border);
     padding: 1rem 1.5rem;
 }
+
 .glass-modal .modal-header .modal-title {
     color: var(--text-light);
     font-weight: 700;
     font-size: 1.5rem;
 }
+
 .glass-modal .btn-close {
     filter: invert(1);
     opacity: 0.8;
 }
+
 .glass-modal .modal-body {
     padding: 1.5rem;
 }
+
 .movie-info-modal {
     text-align: left;
     margin-bottom: 20px;
 }
+
 .movie-info-modal .poster {
     width: 100%;
     max-width: 200px;
@@ -100,17 +113,20 @@
     border-radius: 16px;
     overflow: hidden;
 }
+
 .movie-info-modal .poster img {
     width: 100%;
     height: auto;
     display: block;
     border-radius: 16px;
 }
+
 .movie-info-modal h3 {
     font-size: 1.4rem;
     font-weight: 700;
     margin-bottom: 12px;
 }
+
 .movie-info-modal .movie-meta {
     margin: 8px 0;
     font-size: 0.85rem;
@@ -119,16 +135,19 @@
     flex-wrap: wrap;
     gap: 8px;
 }
+
 .movie-info-modal .movie-meta span {
     display: inline-block;
     margin-right: 12px;
 }
+
 .calendar-icon {
     width: 18px;
     height: 18px;
     margin-right: 8px;
     vertical-align: middle;
 }
+
 .age-restriction {
     margin-top: 12px;
     padding-top: 8px;
@@ -136,17 +155,21 @@
     font-size: 0.75rem;
     color: rgba(255, 255, 255, 0.6);
 }
+
 .movie-info-left {
     border-right: 1px solid var(--glass-border);
     padding-right: 20px;
 }
+
 .hall-right {
     padding-left: 20px;
 }
+
 .hall-scheme {
     margin: 20px 0;
     text-align: center;
 }
+
 .screen-img {
     width: 100%;
     max-width: 600px;
@@ -154,29 +177,49 @@
     margin: 0 auto 20px;
     display: block;
 }
+
 .seats-container {
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: 60vh;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    touch-action: pan-x pan-y pinch-zoom;
+    cursor: grab;
+}
+
+.seats-container:active {
+    cursor: grabbing;
+}
+
+.seats-inner {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    align-items: center;
-    max-height: 400px;
-    overflow-y: auto;
-    padding: 5px;
+    min-width: min-content;
 }
+
 .seat-row {
     display: flex;
     justify-content: center;
     gap: 6px;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
+
 .row-label {
-    width: 45px;
+    width: auto;
+    min-width: 30px;
     text-align: right;
+    padding-right: 8px;
     font-size: 12px;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.6);
+    flex-shrink: 0;
 }
+
 .seat {
     width: 32px;
     height: 32px;
@@ -191,23 +234,28 @@
     font-size: 11px;
     font-weight: 500;
     color: var(--text-light);
+    flex-shrink: 0;
 }
+
 .seat.free:hover {
     background: rgba(93, 201, 201, 0.6);
     transform: scale(1.02);
 }
+
 .seat.selected {
     background: var(--accent-soft-teal);
     color: #0a0718;
     border-color: #fff;
     box-shadow: 0 0 8px var(--accent-soft-teal);
 }
+
 .seat.taken {
     background: rgba(255, 80, 80, 0.5);
     border-color: #ff8080;
     cursor: not-allowed;
     opacity: 0.8;
 }
+
 .legend {
     display: flex;
     justify-content: center;
@@ -216,6 +264,7 @@
     font-size: 11px;
     flex-wrap: wrap;
 }
+
 .seat-demo {
     display: inline-block;
     width: 22px;
@@ -224,17 +273,21 @@
     margin-right: 5px;
     vertical-align: middle;
 }
+
 .seat-demo.free {
     background: rgba(220, 220, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
+
 .seat-demo.selected {
     background: var(--accent-soft-teal);
 }
+
 .seat-demo.taken {
     background: rgba(255, 80, 80, 0.5);
     border: 1px solid #ff8080;
 }
+
 .price-seat-info {
     display: flex;
     justify-content: space-between;
@@ -243,6 +296,7 @@
     margin: 15px 0;
     flex-wrap: wrap;
 }
+
 .selected-seat-info {
     text-align: center;
     padding: 10px 15px;
@@ -251,56 +305,64 @@
     font-weight: 500;
     font-size: 14px;
 }
+
 .ticket-price {
     font-size: 1.2rem;
     font-weight: 700;
     color: var(--accent-soft-teal);
 }
+
 .modal-footer-buttons {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
     margin-top: 20px;
 }
+
 .email-field {
     margin: 15px 0;
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
+
 .email-field label {
     font-size: 14px;
     opacity: 0.8;
 }
+
 .email-field input {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255, 255, 255, 0.15);
     border: 1px solid var(--glass-border);
     border-radius: 40px;
     padding: 12px 15px;
     width: 100%;
     color: white;
 }
+
 .email-field input:focus {
     border-color: var(--accent-soft-teal);
     outline: none;
 }
+
 .email-field input.error {
     border-color: #ff5050;
-    background: rgba(255,80,80,0.1);
+    background: rgba(255, 80, 80, 0.1);
 }
+
 .email-field .error-message {
     color: #ff5050;
     font-size: 12px;
     margin-top: 4px;
     display: none;
 }
+
 .modal-xl {
     max-width: 90vw;
     width: auto;
     margin: 1rem auto;
 }
 
-/* === Тосты (уведомления в правом нижнем углу) === */
 .toast-container {
     position: fixed;
     bottom: 20px;
@@ -310,6 +372,7 @@
     flex-direction: column;
     gap: 10px;
 }
+
 .toast-notification {
     background: rgba(26, 26, 46, 0.95);
     backdrop-filter: blur(16px);
@@ -318,25 +381,30 @@
     padding: 14px 20px;
     min-width: 260px;
     max-width: 350px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     animation: slideIn 0.3s ease;
     color: var(--text-light);
 }
+
 .toast-notification.success {
     border-left: 4px solid var(--accent-soft-teal);
 }
+
 .toast-notification.error {
     border-left: 4px solid #ff5050;
 }
+
 .toast-notification .toast-title {
     font-weight: 700;
     margin-bottom: 5px;
     font-size: 1rem;
 }
+
 .toast-notification .toast-message {
     font-size: 0.85rem;
     opacity: 0.9;
 }
+
 .toast-notification .toast-link {
     display: inline-block;
     margin-top: 8px;
@@ -344,18 +412,20 @@
     text-decoration: none;
     font-size: 0.8rem;
 }
+
 .toast-notification .toast-link:hover {
     text-decoration: underline;
 }
 
-/* Модальное окно успешной покупки */
 #successModal .modal-content {
     text-align: center;
 }
+
 .success-icon {
     width: 80px;
     margin: 0 auto 20px;
 }
+
 .success-title {
     font-size: 28px;
     font-weight: 700;
@@ -365,36 +435,43 @@
     background-clip: text;
     color: transparent;
 }
+
 .success-details {
     font-size: 16px;
     margin-bottom: 25px;
     opacity: 0.9;
 }
+
 .success-rating {
     margin: 25px 0;
     padding: 15px;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 20px;
 }
+
 .success-rating p {
     margin-bottom: 10px;
     font-size: 14px;
 }
+
 .rating-stars {
     display: flex;
     justify-content: center;
     gap: 8px;
 }
+
 .rating-stars span {
     font-size: 28px;
     cursor: pointer;
     transition: 0.2s;
-    color: rgba(255,255,255,0.3);
+    color: rgba(255, 255, 255, 0.3);
 }
+
 .rating-stars span:hover,
 .rating-stars span.active {
     color: #ffc107;
 }
+
 .success-buttons {
     display: flex;
     justify-content: center;
@@ -402,51 +479,60 @@
     margin-top: 20px;
     flex-wrap: wrap;
 }
+
 .success-buttons .btn {
     padding: 10px 24px;
     border-radius: 40px;
     font-weight: 600;
 }
+
 .btn-vk {
     background: var(--accent-soft-teal);
     color: #0a0718;
 }
+
 .btn-vk:hover {
     background: #fff;
 }
+
 .btn-close-modal {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     color: white;
     border: 1px solid var(--glass-border);
 }
+
 .btn-close-modal:hover {
     color: black;
     background: white;
 }
+
 .month-year-modal {
     z-index: 10000;
 }
+
 @media (max-width: 767px) {
     .month-year-modal {
         width: 90%;
         max-width: 300px;
     }
+
     .month-year-panel {
         width: 100%;
     }
 }
+
 @keyframes slideIn {
     from {
         transform: translateX(100%);
         opacity: 0;
     }
+
     to {
         transform: translateX(0);
         opacity: 1;
     }
 }
 
-/* Адаптация модалки */
 @media (max-width: 768px) {
     .movie-info-left {
         border-right: none;
@@ -454,37 +540,46 @@
         margin-bottom: 20px;
         padding-bottom: 20px;
     }
+
     .hall-right {
         padding-left: 0;
     }
+
     .price-seat-info {
         flex-direction: column;
         align-items: flex-start;
     }
+
     .seat {
         width: 28px;
         height: 28px;
         font-size: 10px;
     }
+
     .row-label {
         width: 35px;
         font-size: 10px;
     }
+
     .modal-xl {
         margin: 10px;
     }
+
     .toast-notification {
         min-width: 220px;
         padding: 10px 16px;
     }
-        .stocks-grid {
-        grid-template-columns: 1fr; /* Одна карточка в строке */
+
+    .stocks-grid {
+        grid-template-columns: 1fr;
         gap: 20px;
     }
+
     .stock-card {
-        height: 280px; /* Чуть уменьшим высоту на мобилках */
+        height: 280px;
     }
 }
+
 @media (max-width: 1200px) {
     .modal-xl {
         max-width: 95%;
