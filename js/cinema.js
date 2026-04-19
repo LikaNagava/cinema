@@ -77,12 +77,9 @@ function renderMarkers() {
                 balloonMaxWidth: 250
             });
 
-            // Сохраняем маркер для доступа из карточек
             markersMap[cinema.name] = placemark;
-
-            // Клик по маркеру
+            
             placemark.events.add('click', (e) => {
-                // Предотвращаем стандартное открытие, чтобы сначала сработал зум
                 e.preventDefault();
                 focusOnCinema(cinema.coords, 18, placemark);
             });
@@ -154,6 +151,9 @@ function renderCinemas() {
 window.updateCinemasByCity = function (city) {
     window._currentCity = city;
     renderCinemas();
+    if (myMap) {
+        renderMarkers();
+    }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
