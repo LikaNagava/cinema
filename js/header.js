@@ -1,22 +1,20 @@
+/* --- header.js (обновлен: сохранение города + вызов обновления кинотеатров с восстановлением вкладки) --- */
 const cities = ['Москва', 'Санкт-Петербург', 'Казань', 'Екатеринбург'];
 let currentCity = 'Москва';
-const savedCity = localStorage.getItem('selectedCity');
-if (savedCity && cities.includes(savedCity)) {
-    currentCity = savedCity;
-}
-window._currentCity = currentCity;
 
-// ========== ВЫБОР ГОРОДА ==========
 function populateCitySelect() {
     const citySelectHeader = document.getElementById('citySelectHeader');
     if (!citySelectHeader) return;
+
+    const savedCity = localStorage.getItem('selectedCity') || 'Москва';
+    window._currentCity = savedCity;
 
     citySelectHeader.innerHTML = '';
     cities.forEach(city => {
         const option = document.createElement('option');
         option.value = city;
         option.textContent = city;
-        if (city === currentCity) option.selected = true;
+        if (city === savedCity) option.selected = true;
         citySelectHeader.appendChild(option);
     });
 }
@@ -26,61 +24,82 @@ function initCitySelector() {
     if (!citySelectHeader) return;
 
     citySelectHeader.addEventListener('change', (e) => {
-        currentCity = e.target.value;
-        window._currentCity = currentCity;
-        localStorage.setItem('selectedCity', currentCity);
+        const newCity = e.target.value;
+        window._currentCity = newCity;
+        localStorage.setItem('selectedCity', newCity);
 
-        if (typeof window.updateCinemasByCity === 'function') {
-            window.updateCinemasByCity(currentCity);
+        const cityNameSpan = document.getElementById('currentCityName');
+        if (cityNameSpan) cityNameSpan.innerText = newCity;
+
+       if (typeof window.updateCinemasByCity === 'function') {
+            window.updateCinemasByCity(newCity);
         }
+        
         if (window.selectedDateObj && typeof window.updateSessionsForDate === 'function') {
             window.updateSessionsForDate(window.selectedDateObj);
+        }
+        
+        if (typeof window.refreshCinemasList === 'function') {
+            window.refreshCinemasList(newCity);
         }
     });
 }
 
-// ========== ПОИСК ==========
 function initSearch() {
     const searchInput = document.getElementById('searchInput');
     if (!searchInput) return;
-
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase();
         if (query.includes('афиш')) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            searchInput.value = '';
         } else if (query.includes('фильм')) {
             const movieSection = document.querySelector('.movie-grid');
             if (movieSection) movieSection.scrollIntoView({ behavior: 'smooth' });
-            searchInput.value = '';
-        } else if (query.includes('кинотеатр')) {
-            const scheduleSection = document.querySelector('.schedule-wrapper');
-            if (scheduleSection) scheduleSection.scrollIntoView({ behavior: 'smooth' });
-            searchInput.value = '';
-        } else if (query.includes('акци')) {
-            alert('Акции появятся позже');
-            searchInput.value = '';
         }
     });
 }
 
-// ========== ИНИЦИАЛИЗАЦИЯ ==========
-function initHeader() {
-    if (savedCity && cities.includes(savedCity)) {
-        currentCity = savedCity;
-        window._currentCity = currentCity;
+function closeMenuOnOutsideClick(event) {
+    const mobileNav = document.getElementById('mobileNav');
+    const burgerBtn = document.getElementById('burgerBtn');
+    if (!mobileNav || !burgerBtn) return;
+    if (mobileNav.classList.contains('active') &&
+        !burgerBtn.contains(event.target) &&
+        !mobileNav.contains(event.target)) {
+        burgerBtn.classList.remove('active');
+        mobileNav.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+function initBurgerMenu() {
+    const burgerBtn = document.getElementById('burgerBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    const body = document.body;
+    if (!burgerBtn || !mobileNav) return;
+
+    function toggleMenu() {
+        burgerBtn.classList.toggle('active');
+        mobileNav.classList.toggle('active');
+        body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
     }
 
+    document.addEventListener('click', closeMenuOnOutsideClick);
+    burgerBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleMenu();
+    });
+    mobileNav.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A') toggleMenu();
+    });
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 991 && mobileNav.classList.contains('active')) toggleMenu();
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
     populateCitySelect();
     initCitySelector();
     initSearch();
-}
-
-document.addEventListener('DOMContentLoaded', initHeader);
-
-window.getCurrentCity = () => window._currentCity;
-window.setCurrentCity = (city) => {
-    currentCity = city;
-    window._currentCity = currentCity;
-    localStorage.setItem('selectedCity', currentCity);
-};
+    initBurgerMenu();
+});
