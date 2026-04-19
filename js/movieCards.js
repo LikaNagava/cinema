@@ -26,88 +26,101 @@ function renderMovieGrid(containerId, movies) {
 
 function renderMovieCarousel(containerId, movies) {
     const container = document.getElementById(containerId);
-    if (!container) return;
+    if (!container || !movies.length) return;
 
     let currentIndex = 0;
-    let cardsPerSlide = getCardsPerSlide();
-    let carouselTrack = null;
-    let prevBtn = null, nextBtn = null;
+    let autoPlayInterval = null;
+    let lastCardsCount = 0;
 
     function getCardsPerSlide() {
         const width = window.innerWidth;
         if (width >= 1500) return 8;
         if (width >= 1200) return 5;
-        if (width >= 768) return 4;
+        if (width >= 992) return 4;
+        if (width >= 768) return 3;
         return 2;
     }
 
-    function buildCarousel() {
-        cardsPerSlide = getCardsPerSlide();
-        const totalCards = movies.length;
+    function draw(withAnimation = true) {
+        const cardsCount = getCardsPerSlide();
+        const total = movies.length;
+        const visible = [];
 
-        const visibleMovies = [];
-        for (let i = 0; i < cardsPerSlide; i++) {
-            const idx = (currentIndex + i) % totalCards;
-            visibleMovies.push(movies[idx]);
+        for (let i = 0; i < cardsCount; i++) {
+            visible.push(movies[(currentIndex + i) % total]);
         }
 
-        const cardsHtml = visibleMovies.map(m => createMovieCardHTML(m, true)).join('');
-        const carouselHTML = `
-            <div class="custom-carousel">
-                <div class="carousel-track-wrapper">
-                    <div class="carousel-track">${cardsHtml}</div>
-                </div>
-                <button class="carousel-btn prev-btn">‹</button>
-                <button class="carousel-btn next-btn">›</button>
-            </div>
-        `;
-        container.innerHTML = carouselHTML;
+        const track = container.querySelector('.carousel-track');
+        if (!track) return;
 
-        carouselTrack = container.querySelector('.carousel-track');
-        prevBtn = container.querySelector('.prev-btn');
-        nextBtn = container.querySelector('.next-btn');
-
-        function slide(direction) {
-            const step = direction === 'next' ? 1 : -1;
-            currentIndex = (currentIndex + step + totalCards) % totalCards;
-            updateCarousel();
-        }
-
-        function updateCarousel() {
-            const newMovies = [];
-            for (let i = 0; i < cardsPerSlide; i++) {
-                const idx = (currentIndex + i) % totalCards;
-                newMovies.push(movies[idx]);
-            }
-            const newCardsHtml = newMovies.map(m => createMovieCardHTML(m, true, '')).join('');
-            carouselTrack.style.opacity = '0.5';
+        if (withAnimation) {
+            track.style.opacity = '0';
             setTimeout(() => {
-                carouselTrack.innerHTML = newCardsHtml;
-                carouselTrack.style.opacity = '1';
+                track.innerHTML = visible.map(m => createMovieCardHTML(m, true)).join('');
+                track.style.opacity = '1';
                 attachMovieDetailsListeners();
-            }, 150);
+            }, 200);
+        } else {
+            track.innerHTML = visible.map(m => createMovieCardHTML(m, true)).join('');
+            track.style.opacity = '1';
+            attachMovieDetailsListeners();
         }
-
-        prevBtn.addEventListener('click', () => slide('prev'));
-        nextBtn.addEventListener('click', () => slide('next'));
-        attachMovieDetailsListeners();
+        lastCardsCount = cardsCount;
     }
 
-    function handleResize() {
-        const newCardsPerSlide = getCardsPerSlide();
-        if (newCardsPerSlide !== cardsPerSlide) {
-            buildCarousel();
-        }
-    }
-
-    let resizeTimer;
     window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(handleResize, 150);
+        const currentCount = getCardsPerSlide();
+        if (currentCount !== lastCardsCount) {
+            draw(false);
+        }
     });
 
-    buildCarousel();
+    container.innerHTML = `
+    <div class="custom-carousel">
+        <div class="carousel-track-wrapper"><div class="carousel-track"></div></div>
+        <button class="carousel-btn prev-btn">
+            <img src="${fixPath('media/arrowLeft.png')}" alt="Назад" width="32" height="32">
+        </button>
+        <button class="carousel-btn next-btn">
+            <img src="${fixPath('media/arrowRight.png')}" alt="Вперед" width="32" height="32">
+        </button>
+    </div>
+`;
+
+    container.querySelector('.prev-btn').onclick = () => {
+        currentIndex = (currentIndex - 1 + movies.length) % movies.length;
+        draw(true);
+        resetAutoPlay();
+    };
+
+    container.querySelector('.next-btn').onclick = () => {
+        currentIndex = (currentIndex + 1) % movies.length;
+        draw(true);
+        resetAutoPlay();
+    };
+
+    function startAutoPlay() {
+        autoPlayInterval = setInterval(() => {
+            currentIndex = (currentIndex + 1) % movies.length;
+            draw(true);
+        }, 5000);
+    }
+
+    function stopAutoPlay() {
+        clearInterval(autoPlayInterval);
+    }
+
+    function resetAutoPlay() {
+        stopAutoPlay();
+        startAutoPlay();
+    }
+
+    container.addEventListener('mouseenter', stopAutoPlay);
+    container.addEventListener('mouseleave', startAutoPlay);
+    draw(false);
+    startAutoPlay();
 }
+
 
 function attachMovieDetailsListeners() {
     document.querySelectorAll('.btn-card').forEach(btn => {
@@ -120,7 +133,7 @@ function handleMovieClick(e) {
     e.preventDefault();
     const movieId = this.dataset.id;
     if (movieId) {
-       const isInPages = window.location.pathname.includes('/pages/');
+        const isInPages = window.location.pathname.includes('/pages/');
         const path = isInPages ? `film.html?id=${movieId}` : `pages/film.html?id=${movieId}`;
         window.location.href = path;
     }
