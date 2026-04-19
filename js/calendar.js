@@ -81,8 +81,6 @@ function createMonthYearModal() {
 
     const isMobile = window.innerWidth < 768;
     const rect = monthYearSpan.getBoundingClientRect();
-
-    // Всегда добавляем в body
     document.body.appendChild(modal);
 
     if (isMobile) {
@@ -102,11 +100,11 @@ function createMonthYearModal() {
         <div class="month-year-panel glass">
             <div class="years-row">
                 <button class="prev-year-btn icon-btn">
-                    <img src="media/index/влево.png" alt="Назад" width="20" height="20">
+                    <img src="media/arrowLeft.png" alt="Назад" width="20" height="20">
                 </button>
                 <span class="year-display">${currentDate.getFullYear()}</span>
                 <button class="next-year-btn icon-btn">
-                    <img src="media/index/вправо.png" alt="Вперёд" width="20" height="20">
+                    <img src="media/arrowRight.png" alt="Вперёд" width="20" height="20">
                 </button>
             </div>
             <div class="months-grid" id="monthsGrid"></div>
@@ -167,7 +165,6 @@ function createMonthYearModal() {
     return modal;
 }
 
-// Обработчик клика на заголовок месяца/года
 const monthYearSpan = document.getElementById('monthYear');
 if (monthYearSpan) {
     monthYearSpan.style.cursor = 'pointer';
@@ -176,6 +173,5 @@ if (monthYearSpan) {
         setTimeout(() => modal.classList.add('active'), 10);
     });
 }
-// Инициализация
 renderCalendar();
 window.selectDate = selectDate;
