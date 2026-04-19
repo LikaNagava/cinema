@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
@@ -8,11 +9,10 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/carts.css">
     <link rel="stylesheet" href="../css/modal.css">
-    <link rel="stylesheet" href="../css/large.css">
-    <link rel="stylesheet" href="../css/laptop.css">
-    <link rel="stylesheet" href="../css/mobile.css">
+    <link rel="stylesheet" href="../css/responsive.css">
     <link rel="shortcut icon" href="../media/favicon.ico">
 </head>
+
 <body>
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
@@ -20,27 +20,42 @@
 
     <header class="glass">
         <div class="logo-city-group">
-            <div class="logo">SKY<span>CINEMA</span></div>
+            <div class="logo">
+                <a href="../index.html" style="text-decoration: none; color: inherit;">SKY<span>CINEMA</span></a>
+            </div>
             <div class="city-selector">
                 <img src="../media/map.png" alt="карта" height="25">
-                <select id="citySelectHeader" class="glass-select"></select>
+                <select id="citySelectHeader" class="glass-select-header"></select>
             </div>
         </div>
-        <nav>
+
+        <nav class="desktop-nav">
             <ul>
                 <li><a href="../index.html">Афиша</a></li>
-                <li><a href="films.html">Фильмы</a></li>
+                <li><a href="#" class="active">Фильмы</a></li>
                 <li><a href="cinema.html">Кинотеатры</a></li>
                 <li><a href="stocks.html">Акции</a></li>
             </ul>
         </nav>
+
         <div class="header-right">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Поиск по страницам..." class="glass-input">
+            <div class="search-box d-none d-md-flex">
+                <input type="text" id="searchInput" placeholder="Поиск по странице..." class="glass-input">
                 <img src="../media/magnifier.png" alt="Поиск" class="search-icon">
+            </div>
+            <div class="burger-menu" id="burgerBtn">
+                <span></span><span></span><span></span>
             </div>
         </div>
     </header>
+    <div class="mobile-nav-container" id="mobileNav">
+        <ul class="mobile-ul">
+            <li><a href="../index.html">Афиша</a></li>
+            <li><a href="films.html">Фильмы</a></li>
+            <li><a href="cinema.html">Кинотеатры</a></li>
+            <li><a href="stocks.html">Акции</a></li>
+        </ul>
+    </div>
 
     <main id="movieMain">
         <div class="container-fluid px-lg-5 px-md-4 px-3">
@@ -73,8 +88,11 @@
                                 <span>Длительность: <span id="detailDuration"></span> мин</span>
                                 <span>Возраст: <span id="detailAgeText"></span></span>
                             </div>
-                            <div class="detail-actors"><strong>Главные роли:</strong> <span id="detailActors"></span></div>
-                            <div class="detail-description"><strong>Описание:</strong> <p id="detailDesc"></p></div>
+                            <div class="detail-actors"><strong>Главные роли:</strong> <span id="detailActors"></span>
+                            </div>
+                            <div class="detail-description"><strong>Описание:</strong>
+                                <p id="detailDesc"></p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -91,8 +109,7 @@
     <footer class="glass">
         <p>© 2026 SkyCinema. Все права защищены.</p>
     </footer>
-
-    <!-- Модальные окна -->
+    
     <div class="modal fade" id="ticketModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content glass-modal">
@@ -121,11 +138,13 @@
                             </div>
                             <div class="email-field">
                                 <label for="userEmail">Email для получения билета:</label>
-                                <input type="email" id="userEmail" class="glass-input" placeholder="example@mail.ru" required>
+                                <input type="email" id="userEmail" class="glass-input" placeholder="example@mail.ru"
+                                    required>
                             </div>
                             <div class="modal-footer-buttons">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                                <button type="button" id="confirmTicket" class="btn btn-primary" disabled>Купить билет</button>
+                                <button type="button" id="confirmTicket" class="btn btn-primary" disabled>Купить
+                                    билет</button>
                             </div>
                         </div>
                     </div>
@@ -164,7 +183,8 @@
                 <div class="modal-body">
                     <img src="../media/modal/check.png" alt="Успех" class="success-icon">
                     <div class="success-title">Покупка прошла успешно</div>
-                    <div class="success-details">Билет отправлен на указанную почту.<br>Скачать билет можно по ссылке:</div>
+                    <div class="success-details">Билет отправлен на указанную почту.<br>Скачать билет можно по ссылке:
+                    </div>
                     <div class="success-buttons">
                         <a href="https://vk.com/sayonaraf" target="_blank" class="btn btn-vk">Перейти к билету (VK)</a>
                         <button class="btn btn-close-modal" data-bs-dismiss="modal">Закрыть</button>
@@ -172,7 +192,8 @@
                     <div class="success-rating">
                         <p>Оцените процесс покупки</p>
                         <div class="rating-stars" id="ratingStars">
-                            <span data-value="1">★</span><span data-value="2">★</span><span data-value="3">★</span><span data-value="4">★</span><span data-value="5">★</span>
+                            <span data-value="1">★</span><span data-value="2">★</span><span data-value="3">★</span><span
+                                data-value="4">★</span><span data-value="5">★</span>
                         </div>
                     </div>
                 </div>
@@ -190,4 +211,5 @@
     <script src="../js/movieDetail.js"></script>
     <script src="../js/header.js"></script>
 </body>
+
 </html>
