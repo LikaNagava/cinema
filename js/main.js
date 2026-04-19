@@ -4,16 +4,29 @@ const cinemaTabsContainer = document.getElementById('cinemaTabs');
 const sessionsContainer = document.getElementById('sessionsListHome');
 
 function getCurrentCity() {
-    return window._currentCity || 'Москва';
+    return localStorage.getItem('selectedCity') || window._currentCity || 'Москва';
 }
 
-// ========== ВКЛАДКИ КИНОТЕАТРОВ ==========
+function getSavedCinemaForCity(city) {
+    return localStorage.getItem(`selectedCinema_${city}`);
+}
+function saveSelectedCinema(city, cinema) {
+    if (cinema) localStorage.setItem(`selectedCinema_${city}`, cinema);
+}
+
 function renderCinemaTabs() {
     const currentCityName = getCurrentCity();
     const cinemas = cinemasByCity[currentCityName] || [];
-    if (cinemas.length === 0) return;
+    if (cinemas.length === 0) {
+        cinemaTabsContainer.innerHTML = '<div class="placeholder">Нет кинотеатров в этом городе</div>';
+        sessionsContainer.innerHTML = '<p class="placeholder">Нет доступных сеансов</p>';
+        return;
+    }
 
-    if (!currentCinema || !cinemas.includes(currentCinema)) {
+    const savedCinema = getSavedCinemaForCity(currentCityName);
+    if (savedCinema && cinemas.includes(savedCinema)) {
+        currentCinema = savedCinema;
+    } else if (!currentCinema || !cinemas.includes(currentCinema)) {
         currentCinema = cinemas[0];
     }
 
@@ -24,6 +37,7 @@ function renderCinemaTabs() {
     document.querySelectorAll('.cinema-tab').forEach(tab => {
         tab.addEventListener('click', () => {
             currentCinema = tab.dataset.cinema;
+            saveSelectedCinema(getCurrentCity(), currentCinema);
             renderCinemaTabs();
             if (window.selectedDateObj) {
                 updateSessionsForDate(window.selectedDateObj);
@@ -35,7 +49,15 @@ function renderCinemaTabs() {
 }
 
 window.updateCinemasByCity = function (city) {
-    currentCinema = null;
+    const saved = getSavedCinemaForCity(city);
+    const cinemas = cinemasByCity[city] || [];
+    if (saved && cinemas.includes(saved)) {
+        currentCinema = saved;
+    } else if (cinemas.length) {
+        currentCinema = cinemas[0];
+    } else {
+        currentCinema = null;
+    }
     renderCinemaTabs();
     if (window.selectedDateObj) {
         updateSessionsForDate(window.selectedDateObj);
@@ -53,7 +75,6 @@ function isSessionAvailable(session, dateObj) {
     return sessionDate > now;
 }
 
-// ========== ОБНОВЛЕНИЕ СПИСКА СЕАНСОВ ==========
 function updateSessionsForDate(dateObj) {
     if (!dateObj) {
         if (sessionsContainer) sessionsContainer.innerHTML = '<p class="placeholder">Выберите дату</p>';
@@ -95,6 +116,7 @@ function updateSessionsForDate(dateObj) {
         });
     });
 }
+
 document.addEventListener('click', function (e) {
     const star = e.target.closest('#ratingStars span');
     if (!star) return;
@@ -106,12 +128,15 @@ document.addEventListener('click', function (e) {
     }
     showToast('Спасибо за оценку!', true);
 });
-// ========== ИНИЦИАЛИЗАЦИЯ ==========
+
 document.addEventListener('DOMContentLoaded', () => {
+    const activeCity = getCurrentCity();
+    window._currentCity = activeCity;
+
     if (document.getElementById('cinemaTabs')) {
         renderCinemaTabs();
         if (typeof window.updateCinemasByCity === 'function') {
-            window.updateCinemasByCity(window._currentCity);
+            window.updateCinemasByCity(activeCity);
         }
     }
     if (document.getElementById('moviesCarousel')) {
