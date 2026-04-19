@@ -1,7 +1,6 @@
 (function () {
     const urlParams = new URLSearchParams(window.location.search);
     const movieId = parseInt(urlParams.get('id'));
-    // Ищем фильм в общем массиве allMovies (он теперь включает и upcoming)
     const movie = allMovies.find(m => m.id === movieId);
     if (!movie) {
         document.getElementById('movieMain').innerHTML = '<div class="glass" style="padding:40px; text-align:center;">Фильм не найден. <a href="films.html">Вернуться к фильмам</a></div>';
@@ -9,7 +8,6 @@
     }
     document.title = `SkyCinema — ${movie.title}`;
 
-    // Заполнение информации
     document.getElementById('detailPoster').src = fixPath(movie.image);
     document.getElementById('detailAge').innerText = movie.ageRating;
     document.getElementById('detailTitle').innerText = movie.title;
@@ -22,31 +20,41 @@
     document.getElementById('detailActors').innerText = movie.actors || 'Информация скоро появится';
     document.getElementById('detailDesc').innerText = movie.description || 'Описание отсутствует';
 
-    // Галерея
-    // В movieDetail.js замените блок галереи на:
     if (movie.gallery && movie.gallery.length) {
-        const galleryTrack = document.querySelector('.gallery-track');
-        if (galleryTrack) {
-            galleryTrack.innerHTML = movie.gallery.map(img => `<img src="${fixPath(img)}" alt="Кадр из фильма" class="gallery-img">`).join('');
-            let currentGalleryIndex = 0;
-            const galleryImgs = document.querySelectorAll('.gallery-img');
-            const showImage = (index) => {
-                galleryImgs.forEach((img, i) => img.style.display = i === index ? 'block' : 'none');
-            };
-            if (galleryImgs.length) {
-                showImage(0);
-                document.querySelector('.gallery-prev')?.addEventListener('click', () => {
-                    currentGalleryIndex = (currentGalleryIndex - 1 + galleryImgs.length) % galleryImgs.length;
-                    showImage(currentGalleryIndex);
-                });
-                document.querySelector('.gallery-next')?.addEventListener('click', () => {
-                    currentGalleryIndex = (currentGalleryIndex + 1) % galleryImgs.length;
-                    showImage(currentGalleryIndex);
-                });
+    const galleryTrack = document.querySelector('.gallery-track');
+    if (galleryTrack) {
+        galleryTrack.innerHTML = movie.gallery.map(img => `<img src="${fixPath(img)}" alt="Кадр из фильма" class="gallery-img">`).join('');
+        let currentGalleryIndex = 0;
+        const galleryImgs = document.querySelectorAll('.gallery-img');
+        const showImage = (index) => {
+            galleryImgs.forEach((img, i) => img.style.display = i === index ? 'block' : 'none');
+        };
+        if (galleryImgs.length) {
+            showImage(0);
+            const prevBtn = document.querySelector('.gallery-prev');
+            const nextBtn = document.querySelector('.gallery-next');
+            
+            if (prevBtn) {
+                prevBtn.innerHTML = `<img src="${fixPath('media/arrowLeft.png')}" alt="Назад" width="28" height="28">`;
+                prevBtn.classList.add('gallery-nav-btn');
             }
+            if (nextBtn) {
+                nextBtn.innerHTML = `<img src="${fixPath('media/arrowRight.png')}" alt="Вперед" width="28" height="28">`;
+                nextBtn.classList.add('gallery-nav-btn');
+            }
+            
+            prevBtn?.addEventListener('click', () => {
+                currentGalleryIndex = (currentGalleryIndex - 1 + galleryImgs.length) % galleryImgs.length;
+                showImage(currentGalleryIndex);
+            });
+            nextBtn?.addEventListener('click', () => {
+                currentGalleryIndex = (currentGalleryIndex + 1) % galleryImgs.length;
+                showImage(currentGalleryIndex);
+            });
         }
     }
-    // Увеличение фото при клике (вне IIFE)
+}
+    
     const galleryTrack = document.querySelector('.gallery-track');
     if (galleryTrack) {
         galleryTrack.addEventListener('click', (e) => {
@@ -59,10 +67,8 @@
         });
     }
 
-    // ----- РАСПИСАНИЕ (без вкладок, группировка по датам и кинотеатрам) -----
     const sessionsListMovie = document.getElementById('sessionsListMovie');
 
-    // Получить все сеансы для фильма (на все даты) с дополнительной информацией о кинотеатре
     function getAllSessionsForMovie() {
         const result = [];
         for (const cinema in sessionsMock) {
@@ -82,7 +88,6 @@
                 });
             }
         }
-        // Сортируем по дате, потом по времени
         result.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
         return result;
     }
@@ -94,14 +99,12 @@
             return;
         }
 
-        // Текущий город и список кинотеатров в нём
         const city = window.getCurrentCity ? window.getCurrentCity() : 'Москва';
         const cinemasInCity = cinemasByCity[city] || [];
-
-        // Группируем сеансы по дате, а внутри даты – по кинотеатру
         const groupedByDate = {};
+
         allSessions.forEach(session => {
-            if (!cinemasInCity.includes(session.cinema)) return; // показываем только кинотеатры текущего города
+            if (!cinemasInCity.includes(session.cinema)) return;
             if (!groupedByDate[session.date]) groupedByDate[session.date] = {};
             if (!groupedByDate[session.date][session.cinema]) groupedByDate[session.date][session.cinema] = [];
             groupedByDate[session.date][session.cinema].push(session);
@@ -110,7 +113,7 @@
             sessionsListMovie.innerHTML = '<p class="placeholder">Доступных сеансов нет</p>';
             return;
         }
-        // Формируем HTML
+
         let html = '';
         for (const [date, cinemas] of Object.entries(groupedByDate)) {
             const formattedDate = new Date(date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', weekday: 'short' });
@@ -132,7 +135,6 @@
         }
         sessionsListMovie.innerHTML = html;
 
-        // Обработчики кнопок покупки
         document.querySelectorAll('#sessionsListMovie .btn-buy').forEach(btn => {
             btn.addEventListener('click', () => {
                 const session = JSON.parse(btn.dataset.session);
@@ -150,16 +152,15 @@
         });
     }
 
-    // Обновление при смене города
     window.updateCinemasByCity = function (city) {
         renderSessionsForMovie();
     };
 
-    // Инициализация
     document.addEventListener('DOMContentLoaded', () => {
         renderSessionsForMovie();
     });
 })();
+
 document.addEventListener('click', function (e) {
     const star = e.target.closest('#ratingStars span');
     if (!star) return;
@@ -172,7 +173,6 @@ document.addEventListener('click', function (e) {
     if (typeof showToast === 'function') {
         showToast('Спасибо за оценку!', true);
     } else {
-        // fallback, если showToast недоступна
         alert('Спасибо за оценку!');
     }
 });
