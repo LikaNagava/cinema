@@ -9,9 +9,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/carts.css">
     <link rel="stylesheet" href="../css/modal.css">
-    <link rel="stylesheet" href="../css/large.css">
-    <link rel="stylesheet" href="../css/laptop.css">
-    <link rel="stylesheet" href="../css/mobile.css">
+    <link rel="stylesheet" href="../css/responsive.css">
     <link rel="shortcut icon" href="../media/favicon.ico">
 </head>
 
@@ -22,27 +20,40 @@
 
     <header class="glass">
         <div class="logo-city-group">
-            <div class="logo">SKY<span>CINEMA</span></div>
+            <div class="logo">
+                <a href="../index.html" style="text-decoration: none; color: inherit;">SKY<span>CINEMA</span></a>
+            </div>
             <div class="city-selector">
                 <img src="../media/map.png" alt="карта" height="25">
-                <select id="citySelectHeader" class="glass-select"></select>
+                <select id="citySelectHeader" class="glass-select-header"></select>
             </div>
         </div>
-        <nav>
+        <nav class="desktop-nav">
             <ul>
                 <li><a href="../index.html">Афиша</a></li>
                 <li><a href="#" class="active">Фильмы</a></li>
-                <li><a href="../pages/cinema.html">Кинотеатры</a></li>
-                <li><a href="../pages/stocks.html">Акции</a></li>
+                <li><a href="cinema.html">Кинотеатры</a></li>
+                <li><a href="stocks.html">Акции</a></li>
             </ul>
         </nav>
         <div class="header-right">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Поиск по страницам..." class="glass-input">
+            <div class="search-box d-none d-md-flex">
+                <input type="text" id="searchInput" placeholder="Поиск по странице..." class="glass-input">
                 <img src="../media/magnifier.png" alt="Поиск" class="search-icon">
+            </div>
+            <div class="burger-menu" id="burgerBtn">
+                <span></span><span></span><span></span>
             </div>
         </div>
     </header>
+    <div class="mobile-nav-container" id="mobileNav">
+        <ul class="mobile-ul">
+            <li><a href="../index.html">Афиша</a></li>
+            <li><a href="films.html">Фильмы</a></li>
+            <li><a href="cinema.html">Кинотеатры</a></li>
+            <li><a href="stocks.html">Акции</a></li>
+        </ul>
+    </div>
 
     <main>
         <div class="container-fluid px-lg-5 px-md-4 px-3">
@@ -51,18 +62,29 @@
                 <span>Фильмы</span>
             </div>
             <div class="films-header">
-                <h2 class="section-title">Все фильмы</h2>
-                <div class="filters-group">
-                    <select id="genreFilter" class="glass-select">
-                        <option value="all">Все жанры</option>
-                    </select>
+                <div class="title-mobile-wrapper">
+                    <h2 class="section-title">Все фильмы</h2>
+                    <button id="mobileFilterBtn" class="mobile-only-filter-icon">
+                        <img src="../media/params.png" alt="Фильтры">
+                    </button>
+                </div>
+
+                <div class="filters-group desktop-filters-only">
+                    <select id="genreFilter" class="glass-select"></select>
+                    <select id="ageFilter" class="glass-select"></select>
                     <button id="sortAZ" class="filter-btn">А–Я</button>
                     <button id="sortZA" class="filter-btn">Я–А</button>
                 </div>
             </div>
+            
             <div id="filmsGrid" class="movies-grid"></div>
-            <div id="loadMoreBtn" class="load-more-btn"><span>Показать ещё</span><span style="font-size:20px;">▼</span>
+            <div id="loadMoreBtn" class="load-more-btn"><span>Показать ещё</span><span style="font-size:20px;">
+                <img src="../media/arrowBottom.png" alt="Ещё" width="25"></span>
             </div>
+
+            <h2 class="section-title now-playing-title">Сейчас в прокате</h2>
+            <div id="nowPlayingGrid" class="movies-grid"></div>
+
             <h2 class="section-title upcoming-title">Скоро в прокате</h2>
             <div id="upcomingGrid" class="movies-grid"></div>
         </div>
@@ -71,6 +93,30 @@
     <footer class="glass">
         <p>© 2026 SkyCinema. Все права защищены.</p>
     </footer>
+    <div id="mobileFilterDropdown" class="month-year-modal" style="display: none; position: fixed; z-index: 2000;">
+        <div class="month-year-panel">
+            <div class="filter-group" style="margin-bottom: 20px;">
+                <label
+                    style="display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-light);">Жанр</label>
+                <select id="mobileGenreFilter" class="glass-select" style="width: 100%;"></select>
+            </div>
+            <div class="filter-group" style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-light);">Возрастное
+                    ограничение</label>
+                <select id="mobileAgeFilter" class="glass-select" style="width: 100%;"></select>
+            </div>
+            <div class="filter-group" style="margin-bottom: 20px;">
+                <label
+                    style="display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-light);">Сортировка</label>
+                <div style="display: flex; gap: 12px;">
+                    <button id="mobileSortAZ" class="filter-btn" style="flex: 1;">А–Я</button>
+                    <button id="mobileSortZA" class="filter-btn" style="flex: 1;">Я–А</button>
+                </div>
+            </div>
+            <button id="closeFilterDropdown" class="btn-secondary"
+                style="width: 100%; margin-top: 8px;">Закрыть</button>
+        </div>
+    </div>
 
     <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../js/data.js"></script>
