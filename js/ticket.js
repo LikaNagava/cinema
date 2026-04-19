@@ -6,21 +6,22 @@ let currentMovieForModal = null;
 function renderHallLayout(layout) {
     const container = document.getElementById('seatsContainer');
     if (!container) return;
-    let html = '';
+    let innerHtml = '<div class="seats-inner">';
     layout.forEach(rowSeats => {
         const rowNumber = rowSeats[0].row;
-        html += `<div class="seat-row">`;
-        html += `<div class="row-label"> ${rowNumber} </div>`;
+        innerHtml += `<div class="seat-row">`;
+        innerHtml += `<div class="row-label"> ${rowNumber} </div>`;
         rowSeats.forEach(seat => {
             let statusClass = seat.status;
             if (selectedSeat && selectedSeat.row === seat.row && selectedSeat.seat === seat.seat) {
                 statusClass = 'selected';
             }
-            html += `<div class="seat ${statusClass}" data-row="${seat.row}" data-seat="${seat.seat}">${seat.seat}</div>`;
+            innerHtml += `<div class="seat ${statusClass}" data-row="${seat.row}" data-seat="${seat.seat}">${seat.seat}</div>`;
         });
-        html += `</div>`;
+        innerHtml += `</div>`;
     });
-    container.innerHTML = html;
+    innerHtml += '</div>';
+    container.innerHTML = innerHtml;
 
     document.querySelectorAll('.seat.free, .seat.selected').forEach(seatEl => {
         seatEl.addEventListener('click', () => {
@@ -54,7 +55,6 @@ function updateSelectedSeatInfo() {
 }
 
 function openTicketModal(session, cinemaName = null, dateObj = null) {
-    // Определяем кинотеатр: если передан, используем его, иначе глобальный currentCinema (на главной)
     const cinema = cinemaName || (typeof currentCinema !== 'undefined' ? currentCinema : null);
     const sessionDate = dateObj || window.selectedDateObj;
     currentSessionForModal = session;
@@ -76,8 +76,8 @@ function openTicketModal(session, cinemaName = null, dateObj = null) {
         const month = sessionDate.getMonth() + 1;
         const year = sessionDate.getFullYear();
         dateStr = `${day.toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${year}`;
-    } else if (window.selectedDateObj) {
-        // fallback
+    } 
+    else if (window.selectedDateObj) {
         const day = window.selectedDateObj.getDate();
         const month = window.selectedDateObj.getMonth() + 1;
         const year = window.selectedDateObj.getFullYear();
@@ -153,7 +153,6 @@ function openTicketModal(session, cinemaName = null, dateObj = null) {
             return;
         }
 
-        // Успешная покупка
         const successModal = new bootstrap.Modal(document.getElementById('successModal'));
         successModal.show();
         const modalEl = document.getElementById('ticketModal');
@@ -163,5 +162,4 @@ function openTicketModal(session, cinemaName = null, dateObj = null) {
     };
 }
 
-// Глобальная функция для вызова из других скриптов
 window.openTicketModal = openTicketModal;
