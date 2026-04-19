@@ -1,4 +1,3 @@
-// stocks.js
 const stocksData = [
     {
         id: 'students',
