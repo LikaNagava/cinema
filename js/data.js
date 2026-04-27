@@ -31,39 +31,39 @@ const cinemasByCity = {
 
 const sessionsMock = {
     'СкайКино': {
-        '2026-04-21': [
+        '2026-04-28': [
             { time: '10:00', hall: 'Зал 1', price: 350, movieId: 3, movieTitle: 'Оппенгеймер' },
             { time: '10:00', hall: 'Зал 2', price: 350, movieId: 12, movieTitle: 'Дюна: Часть вторая' },
             { time: '13:30', hall: 'Зал 2', price: 420, movieId: 4, movieTitle: 'Бэтмен' },
             { time: '16:50', hall: 'IMAX', price: 650, movieId: 5, movieTitle: 'Интерстеллар' },
             { time: '20:15', hall: 'Зал 3', price: 480, movieId: 6, movieTitle: 'Начало' }
         ],
-        '2026-04-20': [
+        '2026-04-29': [
             { time: '11:00', hall: 'Зал 1', price: 350, movieId: 4, movieTitle: 'Бэтмен' },
             { time: '18:00', hall: 'Зал 2', price: 400, movieId: 3, movieTitle: 'Оппенгеймер' }
         ]
     },
     'Водный Кинотеатр': {
-        '2026-04-20': [
+        '2026-04-29': [
             { time: '12:00', hall: 'Зал A', price: 390, movieId: 7, movieTitle: 'Джон Уик 4' },
             { time: '18:00', hall: 'Зал B', price: 450, movieId: 8, movieTitle: 'Барби' }
         ],
-        '2026-04-21': [
+        '2026-04-28': [
             { time: '14:00', hall: 'Зал C', price: 380, movieId: 9, movieTitle: 'Человек-паук: Паутина вселенных' }
         ]
     },
     'БумКино': {
-        '2026-04-23': [
+        '2026-04-30': [
             { time: '14:00', hall: 'Зал 1', price: 400, movieId: 9, movieTitle: 'Человек-паук: Паутина вселенных' },
             { time: '19:30', hall: 'Зал 2', price: 480, movieId: 10, movieTitle: 'Флэш' },
             { time: '10:30', hall: 'Зал 2', price: 350, movieId: 12, movieTitle: 'Дюна: Часть вторая' }
         ]
     },
     'ПаркКино': {
-        '2026-04-22': [
+        '2026-04-28': [
             { time: '15:40', hall: 'Зал Premium', price: 520, movieId: 11, movieTitle: 'Титаник' }
         ],
-        '2026-04-25': [
+        '2026-04-29': [
             { time: '12:00', hall: 'Зал 1', price: 440, movieId: 12, movieTitle: 'Дюна: Часть вторая' }
         ]
     },
@@ -79,10 +79,10 @@ const sessionsMock = {
             { time: '14:00', hall: 'Зал A', price: 390, movieId: 7, movieTitle: 'Джон Уик 4' },
             { time: '14:00', hall: 'Зал B', price: 450, movieId: 8, movieTitle: 'Барби' }
         ],
-        '2026-04-21': [{ time: '12:00', hall: 'Зал 1', price: 460, movieId: 12, movieTitle: 'Дюна: Часть вторая' }]
+        '2026-04-30': [{ time: '12:00', hall: 'Зал 1', price: 460, movieId: 12, movieTitle: 'Дюна: Часть вторая' }]
     },
     'Екатеринбург': {
-        '2026-04-24': [
+        '2026-05-02': [
             { time: '15:40', hall: 'Зал Premium', price: 520, movieId: 11, movieTitle: 'Титаник' }
         ]
     }
